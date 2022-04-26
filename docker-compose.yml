@@ -1,0 +1,50 @@
+version: "3.8"
+services:
+  web:
+    image: nginx
+    volumes:
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - .:${APP_PATH_CONTAINER}
+    ports:
+      - "8080:80"
+    environment:
+      - NGINX_HOST=example.com
+      - NGINX_PORT=80
+    links:
+      - php-fpm
+    networks:
+      - app-network
+
+  php-fpm:
+    build:
+      context: ./
+      dockerfile: docker/php/Dockerfile
+    volumes:
+      - ${APP_PATH_HOST}:${APP_PATH_CONTAINER}
+    working_dir: ${APP_PATH_CONTAINER}
+    depends_on:
+      - redis
+    networks:
+      - app-network
+
+  redis:
+    image: redis
+    container_name: ${REDIS_HOST}
+    ports:
+      - 6391:6379
+    restart: always
+    networks:
+      - app-network
+
+  composer:
+    image: composer
+    volumes:
+      - ${APP_PATH_HOST}:${APP_PATH_CONTAINER}
+    working_dir: ${APP_PATH_CONTAINER}
+    command: composer update
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

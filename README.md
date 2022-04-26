@@ -1,2 +1,16 @@
 # fibonacci
-Generate and cache Fibonacci numbers
+<p>Generate and cache Fibonacci numbers</p>
+
+<p>Cервис с единственным API методом, возвращающим срез последовательности чисел
+из ряда Фибоначчи и простым UI для проверок.</p>
+<h3>Развернуть у себя</h3>
+<ul>
+<li>Склонировать репозиторий</li>
+<li>Перейти в дирректорию репозитория</li>
+<li>Выполнить:
+<pre>
+docker-compose up
+</pre>
+</li>
+<li>Открыть в браузере http://localhost:8080/</li>
+</ul>
